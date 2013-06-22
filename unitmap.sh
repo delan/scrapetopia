@@ -30,7 +30,9 @@ for i in {0..9999}; do
 		egrep -o "$p2" "$tmp".$i | sed -r "$p3"
 		unlock
 	else
+		lock
 		printf 'nope\t%06d\n' $i
+		unlock
 	fi
 	rm -f $tmp.$i
 	) &
