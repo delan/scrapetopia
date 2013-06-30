@@ -8,7 +8,7 @@ import sqlite3
 
 c = sqlite3.connect('data/meta.db')
 
-prefix = 'http://dbs.ilectures.curtin.edu.au/lectopia/lectopia.lasso?ut='
+prefix = 'http://dbs.ilectures.curtin.edu.au/lectopia/lectopia.lasso?skip=30&ut='
 prefix2 = 'http://dbs.ilectures.curtin.edu.au/lectopia/downloadpage.lasso?fid='
 prefix3 = 'http://dbs.ilectures.curtin.edu.au/lectopia/'
 tzoffset = 28800 # lecture times are UTC+8
@@ -49,7 +49,7 @@ while True:
 		meta = lecture.find_all(class_='metaTag')
 		for k in meta:
 			v = k.next_sibling.next_sibling
-			if v:
+			if v and v.string:
 				key = normalise_whitespace(k.string)
 				value = normalise_whitespace(v.string)
 				c.execute('INSERT INTO meta VALUES (?, ?, ?)',
@@ -57,6 +57,8 @@ while True:
 				c.commit()
 		form_filter = {'name': 'Download' + str(lectopia_lecture)}
 		form = lecture.find(attrs=form_filter)
+		if form is None:
+			continue
 		option_filter = {'title': re.compile('.+')}
 		options = form.find_all('option', attrs=option_filter)
 		for file in options:
