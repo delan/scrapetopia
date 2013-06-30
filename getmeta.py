@@ -6,7 +6,7 @@ import urllib2
 import bs4
 import sqlite3
 
-c = sqlite3.connect('data/meta.db')
+c = sqlite3.connect('data/meta.db', timeout=30.0)
 
 prefix = 'http://dbs.ilectures.curtin.edu.au/lectopia/lectopia.lasso?ut='
 prefix2 = 'http://dbs.ilectures.curtin.edu.au/lectopia/downloadpage.lasso?fid='
@@ -14,7 +14,6 @@ prefix3 = 'http://dbs.ilectures.curtin.edu.au/lectopia/'
 tzoffset = 28800 # lecture times are UTC+8
 
 def fetch_wrapper(url):
-	print url
 	return urllib2.urlopen(url).read()
 
 def normalise_whitespace(text):
@@ -23,7 +22,6 @@ def normalise_whitespace(text):
 	return text
 
 def missing_unit():
-	print 'Unit does not appear to exist'
 	sys.exit(0)
 
 soup = bs4.BeautifulSoup(fetch_wrapper(prefix + sys.argv[1]))
