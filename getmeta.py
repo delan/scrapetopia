@@ -22,13 +22,19 @@ def normalise_whitespace(text):
 	text = re.sub('^\s+|\s+$', '', text, flags=re.UNICODE)
 	return text
 
+def missing_unit():
+	print 'Unit does not appear to exist'
+	sys.exit(0)
+
 soup = bs4.BeautifulSoup(fetch_wrapper(prefix + sys.argv[1]))
+
+if soup.h2 is None:
+	missing_unit()
 
 m = re.match('(.+) \(([A-Za-z0-9_-]+)\)', soup.h2.string)
 
 if m is None:
-	print 'Unit does not appear to exist'
-	sys.exit(0)
+	missing_unit()
 
 lectopia_unit = sys.argv[1]
 short_name = m.group(2)
