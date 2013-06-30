@@ -13,8 +13,14 @@ prefix2 = 'http://dbs.ilectures.curtin.edu.au/lectopia/downloadpage.lasso?fid='
 prefix3 = 'http://dbs.ilectures.curtin.edu.au/lectopia/'
 tzoffset = 28800 # lecture times are UTC+8
 
-def fetch_wrapper(url):
-	return urllib2.urlopen(url).read()
+def fetch_wrapper(url, retries=5):
+	try:
+		return urllib2.urlopen(url).read()
+	except urllib2.HTTPError:
+		if retries > 0:
+			return fetch_wrapper(url, retries=(retries - 1))
+		else:
+			raise
 
 def normalise_whitespace(text):
 	text = re.sub('\s+', ' ', text, flags=re.UNICODE)
