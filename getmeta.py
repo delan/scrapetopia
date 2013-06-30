@@ -8,7 +8,7 @@ import sqlite3
 
 c = sqlite3.connect('data/meta.db')
 
-prefix = 'http://dbs.ilectures.curtin.edu.au/lectopia/lectopia.lasso?skip=30&ut='
+prefix = 'http://dbs.ilectures.curtin.edu.au/lectopia/lectopia.lasso?ut='
 prefix2 = 'http://dbs.ilectures.curtin.edu.au/lectopia/downloadpage.lasso?fid='
 prefix3 = 'http://dbs.ilectures.curtin.edu.au/lectopia/'
 tzoffset = 28800 # lecture times are UTC+8
