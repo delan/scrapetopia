@@ -26,6 +26,10 @@ soup = bs4.BeautifulSoup(fetch_wrapper(prefix + sys.argv[1]))
 
 m = re.match('(.+) \(([A-Za-z0-9_-]+)\)', soup.h2.string)
 
+if m is None:
+	print 'Unit does not appear to exist'
+	sys.exit(0)
+
 lectopia_unit = sys.argv[1]
 short_name = m.group(2)
 human_name = m.group(1)
