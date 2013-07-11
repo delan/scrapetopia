@@ -9,14 +9,17 @@ for line in sys.stdin:
 	origurl = url
 	url = re.sub('ftp\.ilectures\.curtin\.edu\.au', '134.7.37.39', url)
 	name = re.match('.+/(.+)$', url).group(1)
-	print '\nFetching file', str(i) + ':', name
+	print '\nFetching file', str(i) + ':', name, '...',
 	while True:
-		retval = subprocess.call(['curl', '-#OC-', url])
+		retry = 0
+		retval = subprocess.call(['curl', '-fsOC-', url])
 		if retval in (0, 33):
-			print 'Success!'
+			print 'success!'
 			break
 		else:
-			print '\nRetrying, error', retval
+			retry += 1
+			print 'error', retval
+			print 'Retry #' + retry, '...',
 	done = open('done.txt', 'a')
 	done.write(origurl + '\n')
 	done.close()
