@@ -3,6 +3,8 @@ import time
 import re
 import subprocess
 
+sys.stdout = sys.stderr
+
 i = 0
 for line in sys.stdin:
 	i += 1
