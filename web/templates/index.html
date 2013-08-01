@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Curtin University Lectopia Archives{% endblock %}
+{% block content %}
+<h2>Statistics</h2>
+
+<table>
+	<tr>
+		<th>Total units
+		<td class="stats" id="units_total">...
+	<tr>
+		<th>Non-empty units
+		<td class="stats" id="units_useful">...
+	<tr>
+		<th>Non-empty lectures
+		<td class="stats" id="lectures_useful">...
+	<tr>
+		<th>Total files
+		<td class="stats" id="files_total">...
+	<tr>
+		<th>Available files
+		<td class="stats" id="files_useful">...
+	<tr>
+		<th>Total files size
+		<td class="stats" id="files_total_size">...
+	<tr>
+		<th>Available files size
+		<td class="stats" id="files_useful_size">...
+</table>
+
+<script>
+$('.stats').each(function() {
+	var that = this;
+	var kind = that.id;
+	$.get('/stats/' + kind, function(d) {
+		$(that).text(d);
+	});
+});
+</script>
+{% endblock %}

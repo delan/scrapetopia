@@ -1,0 +1,14 @@
+* {
+	font-family: sans-serif;
+}
+body {
+	width: 40em;
+	margin: 0 auto;
+}
+td, th {
+	padding: 0.25em;
+	text-align: left;
+}
+td {
+	padding-left: 2em;
+}
