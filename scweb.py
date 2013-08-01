@@ -100,47 +100,6 @@ def meta_by_lecture(lecture):
 	o['aaData'] = r.fetchall()
 	return flask.Response(json.dumps(o), mimetype='application/json')
 
-@app.route('/files/<fname>')
-def file_by_name(fname):
-	# Flask does not support serving a partial static file with Range.
-	# Roll our own handler here instead.
-	fname = os.path.join(mediadir, fname)
-	mime = {
-		'3gp': 'audio/3gpp',
-		'm4b': 'audio/mp4a-latm',
-		'mov': 'video/quicktime',
-		'mp3': 'audio/mpeg',
-		'mp4': 'video/mp4',
-		'wma': 'audio/x-ms-wma',
-		'wmv': 'video/x-ms-wmv'
-	}[re.match('^.+\\.([^.]+)$', fname).group(1)]
-	try:
-		size = os.stat(fname).st_size
-	except OSError:
-		return flask.Response(status=404)
-	begin = 0
-	end = size - 1
-	if flask.request.headers.has_key('Range'):
-		ranges = re.findall('\\d+', flask.request.headers['Range'])
-		begin = int(ranges[0])
-		if len(ranges) > 1:
-			end = int(ranges[1])
-		length = 1 + end - begin
-		if begin < end < size:
-			data = None
-			with open(fname, 'rb') as f:
-				f.seek(begin)
-				data = f.read(length)
-			response = flask.Response(data, status=206)
-			response.headers.add('Content-Type', mime)
-			response.headers.add('Accept-Ranges', 'bytes')
-			response.headers.add('Content-Range',
-				'bytes %d-%d/%d' % (begin, end, size))
-			return response
-		else:
-			return flask.Response(status=416)
-	return flask.Response(open(fname, 'rb'), mimetype=mime)
-
 if __name__ == '__main__':
 	if len(sys.argv) == 2:
 		mediadir = sys.argv[1]
@@ -149,7 +108,4 @@ if __name__ == '__main__':
 		PORT = sys.argv[2]
 	else:
 		sys.exit("usage: scweb.py [mediadir] [port]")
-	server = HTTPServer(WSGIContainer(app))
-	print 'Now listening on port ' + str(PORT)
-	server.listen(PORT)
-	IOLoop.instance().start()
+	app.run(host='::1', port=PORT, debug=False)
