@@ -12,6 +12,7 @@ from tornado.ioloop import IOLoop
 
 basedir = os.path.dirname(__file__)
 app = flask.Flask(__name__, static_folder=os.path.join(basedir, 'static'))
+PORT = 7542
 
 c = sqlite3.connect(os.path.join('data', 'meta.db'), timeout=30.0)
 
@@ -100,4 +101,11 @@ def meta_by_lecture(lecture):
 	return flask.Response(json.dumps(o), mimetype='application/json')
 
 if __name__ == '__main__':
-	app.run(host='::1', port=7542, debug=False)
+	if len(sys.argv) == 2:
+		mediadir = sys.argv[1]
+	elif len(sys.argv) == 3:
+		mediadir = sys.argv[1]
+		PORT = sys.argv[2]
+	else:
+		sys.exit("usage: scweb.py [mediadir] [port]")
+	app.run(host='::1', port=PORT, debug=False)
