@@ -1,6 +1,7 @@
 import os
 import sys
 import math
+import re
 import json
 import flask
 import sqlite3
@@ -98,6 +99,39 @@ def meta_by_lecture(lecture):
 		(lecture,))
 	o['aaData'] = r.fetchall()
 	return flask.Response(json.dumps(o), mimetype='application/json')
+
+@app.route('/files/<fname>')
+def file_by_name(fname):
+	# Flask's send_from_directory/send_file yields zero content-length
+	# and no support for ranges which prevents seek from working.
+	# Roll our own handler here instead.
+	fname = os.path.join(mediadir, fname)
+	try:
+		size = os.stat(fname).st_size
+	except OSError:
+		return flask.Response(status=404)
+	begin = 0
+	end = size - 1
+	if flask.request.headers.has_key('Range'):
+		ranges = re.findall('\\d+', flask.request.headers['Range'])
+		begin = int(ranges[0])
+		if len(ranges) > 1:
+			end = int(ranges[1])
+		length = 1 + end - begin
+		if begin < end < size:
+			data = None
+			with open(fname, 'rb') as f:
+				f.seek(begin)
+				data = f.read(length)
+			response = flask.Response(data, status=206)
+			response.headers.add('Content-Type', 'video/mp4')
+			response.headers.add('Accept-Ranges', 'bytes')
+			response.headers.add('Content-Range',
+				'bytes %d-%d/%d' % (begin, end, size))
+			return response
+		else:
+			return flask.Response(status=416)
+	return flask.Response(open(fname, 'rb'))
 
 if __name__ == '__main__':
 	if len(sys.argv) == 2:

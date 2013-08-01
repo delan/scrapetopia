@@ -2,13 +2,13 @@ jQuery(function($) {
 
 $('#tabs').tabs();
 
-// $('.stats').each(function() {
-// 	var that = this;
-// 	var kind = that.id;
-// 	$.get('/stats/' + kind, function(d) {
-// 		$(that).text(d);
-// 	});
-// });
+$('.stats').each(function() {
+	var that = this;
+	var kind = that.id;
+	$.get('/stats/' + kind, function(d) {
+		$(that).text(d);
+	});
+});
 
 function dt_options(o) {
 	return $.extend({
@@ -76,8 +76,11 @@ $('#lectures tbody').on("click", "tr", function() {
 
 $('#files tbody').on("click", "tr", function() {
 	var row = files_dt.fnGetData(this);
+	var url = '/files/' + row[4].match(/[^\/]+$/)[0];
 	$('#tabs').tabs('option', 'active', 4);
-	$('#player').attr('src', row[4]);
+	$('#player').attr('src', url);
+	$('#player').get(0).load();
+	$('#player').get(0).play();
 });
 
 });
