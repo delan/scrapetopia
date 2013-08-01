@@ -1,33 +1,57 @@
 {% extends "base.html" %}
 {% block title %}Curtin University Lectopia Archives{% endblock %}
 {% block content %}
-<h2>Statistics</h2>
 
-<table>
-	<tr>
-		<th>Total units
-		<td class="stats" id="units_total">...
-	<tr>
-		<th>Non-empty units
-		<td class="stats" id="units_useful">...
-	<tr>
-		<th>Non-empty lectures
-		<td class="stats" id="lectures_useful">...
-	<tr>
-		<th>Total files
-		<td class="stats" id="files_total">...
-	<tr>
-		<th>Available files
-		<td class="stats" id="files_useful">...
-	<tr>
-		<th>Total files size
-		<td class="stats" id="files_total_size">...
-	<tr>
-		<th>Available files size
-		<td class="stats" id="files_useful_size">...
-</table>
+<style>
+td, th {
+	min-width: 14em;
+}
+</style>
+
+<div id="tabs">
+	<ul>
+		<li><a href="#tabs-1">Statistics</a>
+	</ul>
+	<div id="tabs-1">
+		<h2>Units</h2>
+		<table>
+			<tr>
+				<th>Total units
+				<td class="stats" id="units_total">...
+			<tr>
+				<th>Units with files
+				<td class="stats" id="units_useful">...
+		</table>
+		<h2>Lectures</h2>
+		<table>
+			<tr>
+				<th>Total lectures
+				<td class="stats" id="lectures_total">...
+			<tr>
+				<th>Lectures with files
+				<td class="stats" id="lectures_useful">...
+		</table>
+		<h2>Files</h2>
+		<table>
+			<tr>
+				<th>Total files
+				<td>
+					<span class="stats" id="files_total"
+					>...</span> (<span class="stats"
+					id="files_total_size">...</span>)
+			<tr>
+				<th>Available in this archive
+				<td>
+					<span class="stats" id="files_useful"
+					>...</span> (<span class="stats"
+					id="files_useful_size">...</span>)
+					
+		</table>
+	</div>
+</div>
 
 <script>
+$('#tabs').tabs();
 $('.stats').each(function() {
 	var that = this;
 	var kind = that.id;

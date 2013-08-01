@@ -36,7 +36,7 @@ def hello():
 
 @app.route('/stats/<kind>')
 def stats(kind):
-	o = {}
+	o = None
 	if kind == 'units_total':
 		r = c.execute('SELECT COUNT(*) FROM unit')
 		o = r.fetchone()[0]
@@ -46,6 +46,9 @@ def stats(kind):
 			(SELECT lectopia_unit FROM lecture \
 				WHERE lectopia_lecture IN \
 				(SELECT lectopia_lecture FROM file))')
+		o = r.fetchone()[0]
+	elif kind == 'lectures_total':
+		r = c.execute('SELECT COUNT(*) FROM lecture')
 		o = r.fetchone()[0]
 	elif kind == 'lectures_useful':
 		r = c.execute('SELECT COUNT(*) FROM lecture \
