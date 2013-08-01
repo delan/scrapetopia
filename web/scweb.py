@@ -10,8 +10,6 @@ from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 
 basedir = os.path.dirname(__file__)
-mediadir = '/cygdrive/e/lectopia1'
-
 app = flask.Flask(__name__, static_folder=os.path.join(basedir, 'static'))
 PORT = 7542
 
@@ -80,8 +78,13 @@ def stats(kind):
 # 	return flask.Response(o, mimetype='application/json')
 
 if __name__ == '__main__':
-	if len(sys.argv) > 1:
-		PORT = sys.argv[1]
+	if len(sys.argv) == 2:
+		mediadir = sys.argv[1]
+	elif len(sys.argv) == 3:
+		mediadir = sys.argv[1]
+		PORT = sys.argv[2]
+	else:
+		sys.exit("usage: scweb.py [mediadir] [port]")
 	server = HTTPServer(WSGIContainer(app))
 	print 'Now listening on port ' + str(PORT)
 	server.listen(PORT)
