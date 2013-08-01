@@ -30,6 +30,16 @@ var meta_dt = $('#meta').dataTable(dt_options());
 $('#units tbody').on("click", "tr", function() {
 	var row = units_dt.fnGetData(this);
 	lectures_dt = $('#lectures').dataTable(dt_options({
+		aoColumns: [
+			null,
+			{ bSearchable: false, bVisible: false },
+			null,
+			null
+		],
+		fnRowCallback: function(r, d) {
+			s = new Date(d[2] * 1000).toISOString();
+			$('td:eq(1)', r).text(s);
+		},
 		fnInitComplete: function() {
 			$('#lectures-unit-id').text(row[0]);
 			$('#tabs').tabs('option', 'active', 2);
@@ -40,15 +50,27 @@ $('#units tbody').on("click", "tr", function() {
 
 $('#lectures tbody').on("click", "tr", function() {
 	var row = lectures_dt.fnGetData(this);
-	files_dt = $('#files').dataTable(dt_options({
+	meta_dt = $('#meta').dataTable(dt_options({
+		aoColumns: [
+			{ bSearchable: false, bVisible: false },
+			null,
+			null
+		],
 		fnInitComplete: function() {
 			$('#files-lecture-id').text(row[0]);
 			$('#tabs').tabs('option', 'active', 3);
 		},
-		sAjaxSource: '/lectures/' + row[0]
-	}));
-	meta_dt = $('#meta').dataTable(dt_options({
 		sAjaxSource: '/meta/' + row[0]
+	}));
+	files_dt = $('#files').dataTable(dt_options({
+		aoColumns: [
+			null,
+			{ bSearchable: false, bVisible: false },
+			null,
+			null,
+			{ bVisible: false }
+		],
+		sAjaxSource: '/lectures/' + row[0]
 	}));
 });
 
