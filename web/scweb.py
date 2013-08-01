@@ -68,14 +68,36 @@ def stats(kind):
 		o = bytes(o)
 	return flask.Response(json.dumps(o), mimetype='application/json')
 
-# @app.route('/dummy')
-# def xyz():
-# 	return flask.send_from_directory(app.static_folder, 'index.html')
+@app.route('/units/')
+def units():
+	o = {}
+	r = c.execute('SELECT * FROM unit')
+	o['aaData'] = r.fetchall()
+	return flask.Response(json.dumps(o), mimetype='application/json')
 
-# @app.route('/raw')
-# def raw():
-# 	o = json.dumps({})
-# 	return flask.Response(o, mimetype='application/json')
+@app.route('/units/<unit>')
+def lectures_by_unit(unit):
+	o = {}
+	r = c.execute('SELECT * FROM lecture WHERE lectopia_unit = ?',
+		(unit,))
+	o['aaData'] = r.fetchall()
+	return flask.Response(json.dumps(o), mimetype='application/json')
+
+@app.route('/lectures/<lecture>')
+def files_by_lecture(lecture):
+	o = {}
+	r = c.execute('SELECT * FROM file WHERE lectopia_lecture = ?',
+		(lecture,))
+	o['aaData'] = r.fetchall()
+	return flask.Response(json.dumps(o), mimetype='application/json')
+
+@app.route('/meta/<lecture>')
+def meta_by_lecture(lecture):
+	o = {}
+	r = c.execute('SELECT * FROM meta WHERE lectopia_lecture = ?',
+		(lecture,))
+	o['aaData'] = r.fetchall()
+	return flask.Response(json.dumps(o), mimetype='application/json')
 
 if __name__ == '__main__':
 	if len(sys.argv) == 2:

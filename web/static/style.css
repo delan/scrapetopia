@@ -1,10 +1,19 @@
+@import url(/static/ui/css/smoothness/jquery-ui-1.10.3.custom.min.css);
+@import url(/static/dt/css/jquery.dataTables_themeroller.css);
+
 * {
 	font-family: sans-serif;
 	line-height: 1.5;
 }
+html {
+	overflow-y: scroll;
+}
 body {
-	width: 40em;
+	width: 60em;
 	margin: 0 auto;
+}
+video {
+	width: 100%;
 }
 td, th {
 	padding: 0.25em;
@@ -12,4 +21,13 @@ td, th {
 }
 h1 {
 	text-align: center;
+}
+#tabs-statistics td, #tabs-statistics th {
+	width: 14em;
+}
+.dataTable:not(#meta) tbody tr {
+	cursor: pointer;
+}
+.dataTable:not(#meta) tbody tr:hover td {
+	background: rgb(236, 255, 179) !important;
 }

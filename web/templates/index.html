@@ -2,18 +2,16 @@
 {% block title %}Curtin University Lectopia Archives{% endblock %}
 {% block content %}
 
-<style>
-td, th {
-	min-width: 14em;
-}
-</style>
-
 <div id="tabs">
 	<ul>
-		<li><a href="#tabs-1">Statistics</a>
-		<li><a href="#tabs-2">About</a>
+		<li><a href="#tabs-statistics">Statistics</a>
+		<li><a href="#tabs-units">Units</a>
+		<li><a href="#tabs-lectures">Lectures</a>
+		<li><a href="#tabs-files">Files</a>
+		<li><a href="#tabs-player">Play</a>
+		<li><a href="#tabs-about">About</a>
 	</ul>
-	<div id="tabs-1">
+	<div id="tabs-statistics">
 		<h2>Units</h2>
 		<table>
 			<tr>
@@ -49,7 +47,63 @@ td, th {
 					
 		</table>
 	</div>
-	<div id="tabs-2">
+	<div id="tabs-units">
+		<h2>List of all units</h2>
+		<table id="units">
+			<thead>
+				<tr>
+					<th>#
+					<th>Short name
+					<th>Friendly name
+			<tbody>
+		</table>
+	</div>
+	<div id="tabs-lectures">
+		<h2>Lectures for unit
+			<span id="lectures-unit-id">
+				(choose a unit first)
+			</span>
+		</h2>
+		<table id="lectures">
+			<thead>
+				<tr>
+					<th>#
+					<th>Unit
+					<th>Date/time
+					<th>Duration (mins)
+			<tbody>
+		</table>
+	</div>
+	<div id="tabs-files">
+		<h2>Lecture
+			<span id="files-lecture-id">
+				(choose a lecture first)
+			</span>
+		</h2>
+		<table id="meta">
+			<thead>
+				<tr>
+					<th>#
+					<th>Key
+					<th>Value
+			<tbody>
+		</table>
+		<h2>File formats</h2>
+		<table id="files">
+			<thead>
+				<tr>
+					<th>#
+					<th>Lecture
+					<th>Size
+					<th>Format
+					<th>URL
+			<tbody>
+		</table>
+	</div>
+	<div id="tabs-player" style="text-align: center;">
+		<video id="player" controls></video>
+	</div>
+	<div id="tabs-about">
 		<p>Curtin University used Lectopia to record lectures and
 			provide them to students for nearly a decade, but since
 			the acquisition of Lectopia by Echo360 and the product's
@@ -62,15 +116,4 @@ td, th {
 			This is an archive of the lectures.
 	</div>
 </div>
-
-<script>
-$('#tabs').tabs();
-$('.stats').each(function() {
-	var that = this;
-	var kind = that.id;
-	$.get('/stats/' + kind, function(d) {
-		$(that).text(d);
-	});
-});
-</script>
 {% endblock %}
