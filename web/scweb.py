@@ -102,10 +102,18 @@ def meta_by_lecture(lecture):
 
 @app.route('/files/<fname>')
 def file_by_name(fname):
-	# Flask's send_from_directory/send_file yields zero content-length
-	# and no support for ranges which prevents seek from working.
+	# Flask does not support serving a partial static file with Range.
 	# Roll our own handler here instead.
 	fname = os.path.join(mediadir, fname)
+	mime = {
+		'3gp': 'audio/3gpp',
+		'm4b': 'audio/mp4a-latm',
+		'mov': 'video/quicktime',
+		'mp3': 'audio/mpeg',
+		'mp4': 'video/mp4',
+		'wma': 'audio/x-ms-wma',
+		'wmv': 'video/x-ms-wmv'
+	}[re.match('^.+\\.([^.]+)$', fname).group(1)]
 	try:
 		size = os.stat(fname).st_size
 	except OSError:
@@ -124,14 +132,14 @@ def file_by_name(fname):
 				f.seek(begin)
 				data = f.read(length)
 			response = flask.Response(data, status=206)
-			response.headers.add('Content-Type', 'video/mp4')
+			response.headers.add('Content-Type', mime)
 			response.headers.add('Accept-Ranges', 'bytes')
 			response.headers.add('Content-Range',
 				'bytes %d-%d/%d' % (begin, end, size))
 			return response
 		else:
 			return flask.Response(status=416)
-	return flask.Response(open(fname, 'rb'))
+	return flask.Response(open(fname, 'rb'), mimetype=mime)
 
 if __name__ == '__main__':
 	if len(sys.argv) == 2:
