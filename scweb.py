@@ -14,7 +14,7 @@ basedir = os.path.dirname(__file__)
 app = flask.Flask(__name__, static_folder=os.path.join(basedir, 'static'))
 PORT = 7542
 
-c = sqlite3.connect(os.path.join('..', 'data', 'meta.db'), timeout=30.0)
+c = sqlite3.connect(os.path.join('data', 'meta.db'), timeout=30.0)
 
 def bytes(n, decimal=True, dp=3):
 	base = (2, 10)[decimal];
