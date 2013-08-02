@@ -62,3 +62,16 @@ line 15 to point to the `data/media` directory. nginx proxies to the application
 but is still needed because it is responsible for serving the media files.
 
 Start nginx and the interface will be available on port 8653.
+
+Screenshots
+-----------
+
+![statistics](http://i.imgur.com/Fic6u5F.png)
+
+![units](http://i.imgur.com/Z5cCcGG.png)
+
+![lectures](http://i.imgur.com/eNzehtk.png)
+
+![files](http://i.imgur.com/Fa7tNDk.png)
+
+![player](http://i.imgur.com/n4j8RqT.png)
