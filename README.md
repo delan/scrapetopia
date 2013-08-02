@@ -58,6 +58,7 @@ Hosting the web-based browser
 Run `web.py` to start the application.
 
 Install nginx and use the provided `nginx.conf`, changing the `alias` path on
-line 15 to point to the `data/media` directory.
+line 15 to point to the `data/media` directory. nginx proxies to the application
+but is still needed because it is responsible for serving the media files.
 
 Start nginx and the interface will be available on port 8653.
