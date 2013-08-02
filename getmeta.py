@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+
+import os
 import sys
 import re
 import time
@@ -6,7 +9,7 @@ import urllib2
 import bs4
 import sqlite3
 
-c = sqlite3.connect('data/meta.db', timeout=30.0)
+c = sqlite3.connect(os.path.join('data', 'meta.db'), timeout=30.0)
 
 prefix = 'http://dbs.ilectures.curtin.edu.au/lectopia/lectopia.lasso?ut='
 prefix2 = 'http://dbs.ilectures.curtin.edu.au/lectopia/downloadpage.lasso?fid='

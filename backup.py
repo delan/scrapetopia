@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 import sys
 import shutil
@@ -7,7 +9,8 @@ def copy(n, x, y):
 	shutil.copyfile(os.path.join(x, n), os.path.join(y, n))
 
 if len(sys.argv) != 3:
-	sys.exit("usage: syncsize.py [source_dir] [destination_dir]")
+	sys.exit('backup.py: sync a backup by checking file sizes only\n' +
+		'usage: backup.py [source_dir] [destination_dir]')
 
 i = 0
 x = sys.argv[1]

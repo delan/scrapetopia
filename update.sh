@@ -1,4 +1,9 @@
 #!/bin/sh
-sort -u list.txt > /tmp/1.txt
-sort -u done.txt > /tmp/2.txt
-diff /tmp/1.txt /tmp/2.txt | egrep '^< ' | cut -c3- > newlist.txt
+
+cd data
+a="$$$RANDOM$RANDOM$$"
+b="$$$RANDOM$RANDOM$$"
+sort -u list.txt > /tmp/$a
+sort -u done.txt > /tmp/$b
+diff /tmp/$a /tmp/$b | egrep '^< ' | cut -c3- > list.txt
+rm done.txt

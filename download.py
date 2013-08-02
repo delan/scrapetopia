@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import sys
 import time
 import re
@@ -6,7 +8,7 @@ import subprocess
 sys.stdout = sys.stderr
 
 i = 0
-for line in sys.stdin:
+for line in open(os.path.join('data', 'list.txt')):
 	i += 1
 	url = line.strip()
 	origurl = url
@@ -26,6 +28,6 @@ for line in sys.stdin:
 			print 'error', retval
 			print 'Retry #' + str(retry), '...',
 			wait = (wait * 2) if wait < 15 else 30
-	done = open('done.txt', 'a')
+	done = open(os.path.join('data', 'done.txt'), 'a')
 	done.write(origurl + '\n')
 	done.close()

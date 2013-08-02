@@ -1,7 +1,9 @@
+#!/usr/bin/env python
+
 import time
 import subprocess
 
-budget = 16
+budget = 1 # SQLite doesn't tend to like concurrency
 reach = 9999
 workers = [None] * budget
 unit = 0
