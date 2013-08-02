@@ -9,6 +9,9 @@ import urllib2
 import bs4
 import sqlite3
 
+if len(sys.argv) != 2:
+	sys.exit('Don\'t run me directly!')
+
 c = sqlite3.connect(os.path.join('data', 'meta.db'), timeout=30.0)
 
 prefix = 'http://dbs.ilectures.curtin.edu.au/lectopia/lectopia.lasso?ut='

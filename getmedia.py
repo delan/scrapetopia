@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 
+import os
 import sys
 import time
 import re
 import subprocess
 
 sys.stdout = sys.stderr
+os.chdir(os.path.join('data', 'media'))
 
 i = 0
-for line in open(os.path.join('data', 'list.txt')):
+for line in open(os.path.join('..', 'list.txt')):
 	i += 1
 	url = line.strip()
 	origurl = url
@@ -28,6 +30,6 @@ for line in open(os.path.join('data', 'list.txt')):
 			print 'error', retval
 			print 'Retry #' + str(retry), '...',
 			wait = (wait * 2) if wait < 15 else 30
-	done = open(os.path.join('data', 'done.txt'), 'a')
+	done = open(os.path.join('..', 'done.txt'), 'a')
 	done.write(origurl + '\n')
 	done.close()
