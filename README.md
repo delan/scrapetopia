@@ -25,7 +25,8 @@ ID that exists within this range is 5151.
 Extracting the media file list
 ------------------------------
 
-Run `getlist.py` to dump all media file URLs from the database.
+Run `getlist.py` to dump all media file URLs from the database, except for those
+which have a corresponding file saved in `data/media`.
 
 The list of files will be at `data/list.txt`. Don't try to feed it into a
 typical download manager like JDownloader, it won't handle it nicely because
