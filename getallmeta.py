@@ -4,7 +4,7 @@ import time
 import subprocess
 
 budget = 16
-reach = 9999
+reach = 20000
 workers = [None] * budget
 unit = 0
 
