@@ -8,10 +8,6 @@ import json
 import flask
 import sqlite3
 
-from tornado.wsgi import WSGIContainer
-from tornado.httpserver import HTTPServer
-from tornado.ioloop import IOLoop
-
 basedir = os.path.dirname(__file__)
 mediadir = os.path.join('data', 'media')
 app = flask.Flask(__name__, static_folder=os.path.join(basedir, 'static'))
