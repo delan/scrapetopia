@@ -36,6 +36,14 @@ def normalise_whitespace(text):
 def missing_unit():
 	sys.exit(0)
 
+def execute(*args, **kwargs):
+	try:
+		print lectopia_unit + ':', args[1]
+		c.execute(*args, **kwargs)
+		c.commit()
+	except sqlite3.IntegrityError:
+		pass # If the row already exists, simply move on.
+
 soup = bs4.BeautifulSoup(fetch_wrapper(prefix + sys.argv[1]))
 
 if soup.h2 is None:
@@ -50,9 +58,8 @@ lectopia_unit = sys.argv[1]
 short_name = m.group(2)
 human_name = m.group(1)
 
-c.execute('INSERT INTO unit VALUES (?, ?, ?)',
+execute('INSERT INTO unit VALUES (?, ?, ?)',
 	(lectopia_unit, short_name, human_name))
-c.commit()
 
 while True:
 	for lecture in soup.find_all(class_='mainindex'):
@@ -63,18 +70,16 @@ while True:
 		timestamp = calendar.timegm(timestamp) - tzoffset
 		minutes = normalise_whitespace(heading[1].string)
 		minutes = int(re.match('(\d+) mins', minutes).group(1))
-		c.execute('INSERT INTO lecture VALUES (?, ?, ?, ?)',
+		execute('INSERT INTO lecture VALUES (?, ?, ?, ?)',
 			(lectopia_lecture, lectopia_unit, timestamp, minutes))
-		c.commit()
 		meta = lecture.find_all(class_='metaTag')
 		for k in meta:
 			v = k.next_sibling.next_sibling
 			if v and v.string:
 				key = normalise_whitespace(k.string)
 				value = normalise_whitespace(v.string)
-				c.execute('INSERT INTO meta VALUES (?, ?, ?)',
+				execute('INSERT INTO meta VALUES (?, ?, ?)',
 					(lectopia_lecture, key, value))
-				c.commit()
 		form_filter = {'name': 'Download' + str(lectopia_lecture)}
 		form = lecture.find(attrs=form_filter)
 		if form is None:
@@ -92,10 +97,9 @@ while True:
 			download_soup = fetch_wrapper(download_soup)
 			download_soup = bs4.BeautifulSoup(download_soup)
 			url = download_soup.a['href']
-			c.execute('INSERT INTO file VALUES (?, ?, ?, ?, ?)',
+			execute('INSERT INTO file VALUES (?, ?, ?, ?, ?)',
 				(lectopia_file, lectopia_lecture,
 					bytes, format, url))
-			c.commit()
 	next = soup.find('a', text='next')
 	if next:
 		soup = bs4.BeautifulSoup(fetch_wrapper(prefix3 + next['href']))
