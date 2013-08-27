@@ -3,10 +3,10 @@
 import time
 import subprocess
 
-budget = 1 # SQLite doesn't tend to like concurrency
+budget = 8
 reach = 9999
 workers = [None] * budget
-unit = 0
+unit = 3301
 
 def hire(slot):
 	global unit

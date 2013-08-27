@@ -8,11 +8,10 @@ import calendar
 import urllib2
 import bs4
 import sqlite3
+import lockfile
 
 if len(sys.argv) != 2:
 	sys.exit('Don\'t run me directly!')
-
-c = sqlite3.connect(os.path.join('data', 'meta.db'), timeout=30.0)
 
 prefix = 'http://dbs.ilectures.curtin.edu.au/lectopia/lectopia.lasso?ut='
 prefix2 = 'http://dbs.ilectures.curtin.edu.au/lectopia/downloadpage.lasso?fid='
@@ -38,9 +37,13 @@ def missing_unit():
 
 def execute(*args, **kwargs):
 	try:
-		print lectopia_unit + ':', args[1]
-		c.execute(*args, **kwargs)
-		c.commit()
+		lock = lockfile.FileLock(os.path.join('data', 'meta.db'))
+		with lock:
+			print lectopia_unit + ':', args[1]
+			c = sqlite3.connect(os.path.join('data', 'meta.db'))
+			c.execute(*args, **kwargs)
+			c.commit()
+			c.close()
 	except sqlite3.IntegrityError:
 		pass # If the row already exists, simply move on.
 
@@ -105,6 +108,3 @@ while True:
 		soup = bs4.BeautifulSoup(fetch_wrapper(prefix3 + next['href']))
 	else:
 		break
-
-c.commit()
-c.close()
