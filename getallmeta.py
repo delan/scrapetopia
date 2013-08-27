@@ -6,7 +6,7 @@ import subprocess
 budget = 8
 reach = 9999
 workers = [None] * budget
-unit = 3301
+unit = 0
 
 def hire(slot):
 	global unit
