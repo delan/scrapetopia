@@ -23,7 +23,7 @@ for line in f:
 	wait = 0.1
 	while True:
 		retval = subprocess.call(['curl', '-fsOC-', url])
-		if retval in (0, 33):
+		if retval in (0, 18, 33):
 			print 'success!'
 			break
 		else:
