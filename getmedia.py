@@ -7,10 +7,11 @@ import re
 import subprocess
 
 sys.stdout = sys.stderr
+f = open(os.path.join('data', 'list.txt'))
 os.chdir(os.path.join('data', 'media'))
 
 i = 0
-for line in open(os.path.join('..', 'list.txt')):
+for line in f:
 	i += 1
 	url = line.strip()
 	origurl = url
