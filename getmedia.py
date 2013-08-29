@@ -8,6 +8,7 @@ import subprocess
 
 sys.stdout = sys.stderr
 f = open(os.path.join('data', 'list.txt'))
+done = open(os.path.join('data', 'done.txt'), 'a')
 os.chdir(os.path.join('data', 'media'))
 
 i = 0
@@ -31,6 +32,6 @@ for line in f:
 			print 'error', retval
 			print 'Retry #' + str(retry), '...',
 			wait = (wait * 2) if wait < 15 else 30
-	done = open(os.path.join('..', 'done.txt'), 'a')
 	done.write(origurl + '\n')
-	done.close()
+	done.flush()
+done.close()
