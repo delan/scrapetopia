@@ -45,6 +45,10 @@ Files that are definitely done will automatically go into `data/done.txt`, and
 you can remove these from the main list by running `scalpel.sh`. Running this is
 optional but makes restarts faster because the list is shortened.
 
+If you have lost `data/done.txt` and want to remove completed files in
+`data/media` from your current `data/list.txt`, run `redo.py` and a new
+`list.txt` will be generated without the existing media files.
+
 Backing up media files
 ----------------------
 
